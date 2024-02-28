@@ -2,7 +2,7 @@ import React from 'react'
 
 const CurrentBalance = () => {
   return (
-    <div className='p-10 uppercase'>
+    <div className='w-full px-10 py-5 uppercase'>
         <h1>
             Current Balance
         </h1>
