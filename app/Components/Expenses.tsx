@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import {useState} from 'react'
+import {useState, useRef} from 'react'
 import ExpenseCategoryItem from '@/app/Components/ExpenseCategoryItem'
 import Modal from "@/app/Components/Modal"
 
@@ -46,13 +46,55 @@ const DUMMY_DATA = [
 
 const Expenses = () => {
 
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
+    const amountRef = useRef();
+    const descriptionRef = useRef();
+
+    // Handler Functions
+    const addIncomeHandler = (e: any) => {
+        e.preventDefault();
+
+        const newIncome = {
+            amount: amountRef.current.value,
+            description: descriptionRef.current.value,
+            createdAt: new Date(),
+        }
+
+        console.log(newIncome)
+    }
 
     return (
     /* Expenses */
     <>
-        <Modal show={modalIsOpen} onClose={setModalIsOpen}>
-            <h3>Hello World</h3>
+        {/* Add Income Modal */}
+        <Modal show={showAddIncomeModal} onClose={setShowAddIncomeModal}>
+            <form className='flex flex-col gap-4'>
+                <div className='form-group'>
+                    <label htmlFor="amount">Income Amount</label>
+                    <input
+                    type="number"
+                    name='amount'
+                    ref={amountRef}
+                    min={0.01} 
+                    step={0.01} 
+                    placeholder='Enter income amount'
+                    required
+                    />
+                </div>
+
+                <div className='form-group'>
+                    <label htmlFor="description">Description</label>
+                    <input
+                    type="text"
+                    name='description'
+                    ref={descriptionRef}
+                    placeholder='Enter income description'
+                    required
+                    />
+                </div>
+
+                <button type='submit' className='btn btn-primary'>Add entry</button>
+            </form>
         </Modal>
 
         {/* Current Balance and Buttons to Add Income/Expenses */}
@@ -66,7 +108,7 @@ const Expenses = () => {
         </section>
 
         <section className='flex items-center gap-4 py-3'>
-            <button className='btn btn-primary ' onClick={() => {setModalIsOpen (true)}}>+ Income</button>
+            <button className='btn btn-primary ' onClick={() => {setShowAddIncomeModal (true)}}>+ Income</button>
             <button className='btn btn-primary-outline'>+ Expenses</button>
         </section>
 
