@@ -1,10 +1,13 @@
 "use client"
 
 import React from 'react'
+import {useState} from 'react'
 import ExpenseCategoryItem from '@/app/Components/ExpenseCategoryItem'
+import Modal from "@/app/Components/Modal"
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
+import { currencyFormatter } from '../Controller/utils'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -12,7 +15,7 @@ const DUMMY_DATA = [
     {
         id: 1,
         title: "Entertainment",
-        color: '#000',
+        color: '#FFD200',
         total: 500
     },
     {
@@ -24,27 +27,67 @@ const DUMMY_DATA = [
     {
         id: 3,
         title: "Movies",
-        color: '#ffff',
+        color: '#C33764',
         total: 100
     },
     {
         id: 4,
         title: "Vacation",
-        color: '#000',
+        color: '#34e89e',
         total: 800
     },
     {
         id: 5,
         title: "Grossures",
-        color: '#000',
+        color: '#A7BFE8',
         total: 250
     },
 ]
 
 const Expenses = () => {
-  return (
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    return (
     /* Expenses */
     <>
+        <Modal show={modalIsOpen} onClose={setModalIsOpen}>
+            <h3>Hello World</h3>
+        </Modal>
+
+        {/* Current Balance and Buttons to Add Income/Expenses */}
+        <section className='w-full py-5 uppercase'>
+            <small>
+                Current Balance
+            </small>
+            <h2 className='text-blue-500 font-sans font-bold text-4xl py-3'>
+            {currencyFormatter(10000)}
+            </h2>
+        </section>
+
+        <section className='flex items-center gap-4 py-3'>
+            <button className='btn btn-primary ' onClick={() => {setModalIsOpen (true)}}>+ Income</button>
+            <button className='btn btn-primary-outline'>+ Expenses</button>
+        </section>
+
+        {/* Show Income/Expenses tab */}
+        <div className='bg-gray-800 grid grid-cols-2 divide-x shadow-md drop-shadow-md rounded w-full py-8'>
+            <div className='flex justify-around'>
+                <div className='w-full flex-col flex items-center justify-center'>
+                    <h1 className='uppercase'>Income</h1>
+                    <p className='text-green-500 font-sans text-xl'>{currencyFormatter(10000)}</p>
+                </div>
+                
+            </div>
+            <div className='flex justify-between'>
+                <div className='w-full flex-col flex items-center justify-center'>
+                    <h1 className='uppercase'>Expences</h1>
+                    <p className='text-red-500 font-sans text-xl'>{currencyFormatter(0)}</p>
+                </div>
+            </div>
+        </div>
+
+        {/* Finance Data */}
         <section className='w-full py-6'>
             <h3 className='text-2xl'>My Expenses</h3>
 
@@ -54,7 +97,7 @@ const Expenses = () => {
                         <ExpenseCategoryItem 
                         color= {expense.color}
                         title= {expense.title} 
-                        amount={expense.total}
+                        total={expense.total}
                         />
                     )
                 })}

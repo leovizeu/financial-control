@@ -26,7 +26,7 @@ const MyHeader = () => {
         </div>
 
         {/* Right side of the navigation */}
-        <nav className='flex items-center gap-2'>
+        <nav className='flex items-center gap-4'>
           <div>
             <ImStatsBars className='text-2xl' />
             </div>

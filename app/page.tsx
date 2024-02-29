@@ -1,6 +1,4 @@
-import CurrentBalance from "./Components/CurrentBalance";
 import Expenses from "./Components/Expenses";
-import Income from "./Components/Income";
 
 export default function Home() {
   return (
@@ -9,8 +7,6 @@ export default function Home() {
         <h1 className="w-full flex justify-center text-xl p-6">
           Finance Control
         </h1>
-        <CurrentBalance />
-        <Income />
         <Expenses />
       </div>
     </main>
