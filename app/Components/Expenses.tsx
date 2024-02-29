@@ -51,7 +51,7 @@ const Expenses = () => {
     const descriptionRef = useRef();
 
     // Handler Functions
-    const addIncomeHandler = (e: any) => {
+    const addIncomeHandler = (e) => {
         e.preventDefault();
 
         const newIncome = {
@@ -60,7 +60,7 @@ const Expenses = () => {
             createdAt: new Date(),
         }
 
-        console.log(newIncome)
+        console.log(newIncome)  
     }
 
     return (
@@ -136,7 +136,8 @@ const Expenses = () => {
             <div className='flex flex-col gap-4 mt-6'>
                 {DUMMY_DATA.map(expense => {
                     return (
-                        <ExpenseCategoryItem 
+                        <ExpenseCategoryItem
+                        key={expense.id}
                         color= {expense.color}
                         title= {expense.title} 
                         total={expense.total}
