@@ -1,13 +1,18 @@
 "use client"
 
 import React from 'react'
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import ExpenseCategoryItem from '@/app/Components/ExpenseCategoryItem'
 import Modal from "@/app/Components/Modal"
 
+//Database
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
 import { currencyFormatter } from '../Controller/utils'
+
+//Firebase
+import { db } from '@/app/Controller/Firebase'
+import { collection, addDoc, getDocs } from 'firebase/firestore'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -44,31 +49,59 @@ const DUMMY_DATA = [
     },
 ]
 
-const Expenses = () => {
+function Expenses () {
+
+    const [income, setIncome] = useState([])
+    console.log(income)
 
     const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
     const amountRef = useRef();
     const descriptionRef = useRef();
 
     // Handler Functions
-    const addIncomeHandler = (e) => {
+    const addIncomeHandler = async (e: any) => {
         e.preventDefault();
 
         const newIncome = {
             amount: amountRef.current.value,
             description: descriptionRef.current.value,
             createdAt: new Date(),
+        } 
+
+        const collectionRef = collection(db, 'income')
+        
+        try {
+            const docSnap = await addDoc(collectionRef, newIncome)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    useEffect(() => {
+        const getIncomeData = async () => {
+            const collectionRef = collection(db, 'income')
+            const docsSnap = await getDocs(collectionRef)
+
+            const data = docsSnap.docs.map(doc => {
+                return {
+                    id: doc.id,
+                    ...doc.data(),
+                    createdAt: new Date(doc.data().createdAt.toMillis())
+                }
+            })
+
+            setIncome(data)
         }
 
-        console.log(newIncome)  
-    }
+        getIncomeData()
+    }, [])
 
     return (
     /* Expenses */
     <>
         {/* Add Income Modal */}
         <Modal show={showAddIncomeModal} onClose={setShowAddIncomeModal}>
-            <form className='flex flex-col gap-4'>
+            <form onSubmit={addIncomeHandler} className='flex flex-col gap-4'>
                 <div className='form-group'>
                     <label htmlFor="amount">Income Amount</label>
                     <input
@@ -95,6 +128,22 @@ const Expenses = () => {
 
                 <button type='submit' className='btn btn-primary'>Add entry</button>
             </form>
+
+            <div className='flex flex-col gap-3 mt-6'>
+                <h3 className='text-2xl font-bold'>Income History</h3>
+
+                {income.map((i) => {
+                    return (
+                        <div className='flex items-center justify-between' key={i.id}>
+                            <div>
+                                <p className='font-semibold'>{i.description}</p>
+                                <small className='text-xs'>{i.createdAt.toISOString()}</small>
+                            </div>
+                            <p className='flex items-center gap-2'>{currencyFormatter(i.amount)}</p>
+                        </div>
+                    )
+                })}
+            </div>
         </Modal>
 
         {/* Current Balance and Buttons to Add Income/Expenses */}
