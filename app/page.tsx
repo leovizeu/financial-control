@@ -1,4 +1,4 @@
-import Expenses from "./Components/Expenses";
+import Expenses from "./components/Expenses";
 
 export default function Home() {
   return (
