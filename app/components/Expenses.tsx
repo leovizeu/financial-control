@@ -3,19 +3,12 @@
 import React from 'react'
 import {useState} from 'react'
 import ExpenseCategoryItem from '@/app/components/ExpenseCategoryItem'
-
+import AddIncomeModal from '@/app/components/modals/AddIncomeModal'
 
 // Database
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
-import { currencyFormatter } from '../Controller/utils'
-
-// Firebase
-import { db } from '@/app/Controller/Firebase'
-import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore'
-
-// Icons
-import { FaRegTrashAlt } from 'react-icons/fa'
+import { currencyFormatter } from '../controller/utils'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -54,14 +47,14 @@ const DUMMY_DATA = [
 
 function Expenses () {
 
-    const [income, setIncome] = useState([])
-    console.log(income)
-
     const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
 
     return (
     /* Expenses */
     <>
+        {/* Add Income Modal */}
+
+        <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal} />
 
         {/* Current Balance and Buttons to Add Income/Expenses */}
         <section className='w-full py-5 uppercase'>

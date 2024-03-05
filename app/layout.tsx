@@ -1,6 +1,9 @@
+"use client"
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import MyHeader from "./components/MyHeader";
+import FinanceContextProvider from "@/app/controller/store/finance-context"
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <MyHeader />
-        {children}
-        </body>
+        <FinanceContextProvider>
+          <MyHeader />
+          {children}
+        </FinanceContextProvider>
+      </body>
     </html>
   );
 }

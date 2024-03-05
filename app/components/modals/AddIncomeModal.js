@@ -1,14 +1,13 @@
 import { useRef, useEffect } from 'react'
-import { currencyFormatter } from '../Controller/utils'
-import Modal from "@/app/Components/Modal"
+import { currencyFormatter } from '@/app/controller/utils'
+import Modal from "@/app/components/Modal"
 
 // Database
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
-import { currencyFormatter } from '../Controller/utils'
 
 // Firebase
-import { db } from '@/app/Controller/Firebase'
+import { db } from '@/app/controller/Firebase'
 import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore'
 
 // Icons
@@ -29,41 +28,11 @@ function AddIncomeModal ({ show, onClose }) {
             createdAt: new Date(),
         } 
 
-        const collectionRef = collection(db, 'income')
-        
-        try {
-            const docSnap = await addDoc(collectionRef, newIncome)
-
-            // Update State
-            setIncome((prevState) => {
-                return [
-                    ...prevState,
-                    {
-                        id: docSnap.id,
-                        ...newIncome,
-                    },
-                ]
-            })
-
-            descriptionRef.current.value = ""
-            amountRef.current.value = ""
-        } catch (error) {
-            console.log(error.message)
-        }
+        descriptionRef.current.value = ""
+        amountRef.current.value = ""
     }
 
     const deleteIncomeEntryHandler = async (incomeId) => {
-        const docRef = doc(db, 'income', incomeId)
-        try {
-            await deleteDoc(docRef)
-
-            // Update State
-            setIncome((prevState) => {
-                return prevState.filter((i) => i.id !== incomeId)
-            })
-        } catch (error) {
-            console.log(error.message)
-        }}
 
         useEffect(() => {
             const getIncomeData = async () => {
@@ -136,3 +105,5 @@ function AddIncomeModal ({ show, onClose }) {
         </Modal>
     )
 }
+
+export default AddIncomeModal

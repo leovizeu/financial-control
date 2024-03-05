@@ -1,4 +1,4 @@
-import {currencyFormatter} from '@/app/Controller/utils'
+import {currencyFormatter} from '@/app/controller/utils'
 
 function ExpenseCategoryItem ({ color, title, total }) {
     return (
