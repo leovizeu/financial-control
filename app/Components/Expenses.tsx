@@ -158,28 +158,30 @@ function Expenses () {
                 </div>
 
                 <button type='submit' className='btn btn-primary'>Add entry</button>
+
+                <div className='flex flex-col gap-3 mt-6 bg-contain border'>
+                    <h3 className='text-2xl font-bold'>Income History</h3>
+
+                    {income.map((i) => {
+                        return (
+                            <div className='flex items-center justify-between' key={i.id}>
+                                <div>
+                                    <p className='font-semibold'>{i.description}</p>
+                                    <small className='text-xs'>{i.createdAt.toISOString()}</small>
+                                </div>
+                                <p className='flex items-center gap-2'>
+                                    {currencyFormatter(i.amount)}
+                                    <button onClick={() => {deleteIncomeEntryHandler(i.id)}}>
+                                        <FaRegTrashAlt />
+                                    </button>
+                                </p>
+                            </div>
+                        )
+                    })}
+                </div>
+
             </form>
 
-            <div className='flex flex-col gap-3 mt-6'>
-                <h3 className='text-2xl font-bold'>Income History</h3>
-
-                {income.map((i) => {
-                    return (
-                        <div className='flex items-center justify-between max-h-7' key={i.id}>
-                            <div>
-                                <p className='font-semibold'>{i.description}</p>
-                                <small className='text-xs'>{i.createdAt.toISOString()}</small>
-                            </div>
-                            <p className='flex items-center gap-2'>
-                                {currencyFormatter(i.amount)}
-                                <button onClick={() => {deleteIncomeEntryHandler(i.id)}}>
-                                    <FaRegTrashAlt />
-                                </button>
-                            </p>
-                        </div>
-                    )
-                })}
-            </div>
         </Modal>
 
         {/* Current Balance and Buttons to Add Income/Expenses */}
