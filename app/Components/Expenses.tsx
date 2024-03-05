@@ -5,14 +5,17 @@ import {useState, useRef, useEffect} from 'react'
 import ExpenseCategoryItem from '@/app/Components/ExpenseCategoryItem'
 import Modal from "@/app/Components/Modal"
 
-//Database
+// Database
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
 import { currencyFormatter } from '../Controller/utils'
 
-//Firebase
+// Firebase
 import { db } from '@/app/Controller/Firebase'
-import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore'
+
+// Icons
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -72,10 +75,38 @@ function Expenses () {
         
         try {
             const docSnap = await addDoc(collectionRef, newIncome)
+
+            // Update State
+            setIncome((prevState) => {
+                return [
+                    ...prevState,
+                    {
+                        id: docSnap.id,
+                        ...newIncome,
+                    },
+                ]
+            })
+
+            descriptionRef.current.value = ""
+            amountRef.current.value = ""
         } catch (error) {
             console.log(error.message)
         }
     }
+
+    const deleteIncomeEntryHandler = async (incomeId) => {
+        const docRef = doc(db, 'income', incomeId)
+        try {
+            await deleteDoc(docRef)
+
+            // Update State
+            setIncome((prevState) => {
+                return prevState.filter((i) => i.id !== incomeId)
+            })
+        } catch (error) {
+            console.log(error.message)
+        }
+        }
 
     useEffect(() => {
         const getIncomeData = async () => {
@@ -134,12 +165,17 @@ function Expenses () {
 
                 {income.map((i) => {
                     return (
-                        <div className='flex items-center justify-between' key={i.id}>
+                        <div className='flex items-center justify-between max-h-7' key={i.id}>
                             <div>
                                 <p className='font-semibold'>{i.description}</p>
                                 <small className='text-xs'>{i.createdAt.toISOString()}</small>
                             </div>
-                            <p className='flex items-center gap-2'>{currencyFormatter(i.amount)}</p>
+                            <p className='flex items-center gap-2'>
+                                {currencyFormatter(i.amount)}
+                                <button onClick={() => {deleteIncomeEntryHandler(i.id)}}>
+                                    <FaRegTrashAlt />
+                                </button>
+                            </p>
                         </div>
                     )
                 })}
