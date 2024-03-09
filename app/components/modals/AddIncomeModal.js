@@ -10,7 +10,7 @@ function AddIncomeModal ({ show, onClose }) {
 
     const amoutRef = useRef()
     const descriptionRef = useRef()
-    const { income } = useContext(financeContext)
+    const { income, addIncomeItem, removeIncomeItem } = useContext(financeContext)
 
     // Handler Function 
     const addIncomeHandler = async (e) => {
@@ -22,12 +22,23 @@ function AddIncomeModal ({ show, onClose }) {
             createdAt: new Date(),
         } 
 
-        descriptionRef.current.value = ""
-        amountRef.current.value = ""
+        try {
+            await addIncomeItem(newIncome)
+            descriptionRef.current.value = ""
+            amountRef.current.value = ""
+        } catch (error) {
+            console.log(error.message)
+        }
+
     }
 
     const deleteIncomeEntryHandler = async (incomeId) => {
 
+        try {
+            await removeIncomeItem(incomeId)
+        } catch (error) {
+            console.log(error.message)
+        }
         
     return (
         <Modal show={show} onClose={onClose}>
