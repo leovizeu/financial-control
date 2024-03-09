@@ -1,18 +1,22 @@
 "use client"
 
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 
-const financeContext = createContext({
+// Firebase
+import { db } from '@/app/controller/Firebase'
+import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore'
+
+export const financeContext = createContext({
     income: [],
     addIncomeItem: async () => {},
     removeIncomeItem: async () => {},
 })
 
-export default function FinanceContextProvider(children){
+export default function FinanceContextProvider({children}){
     const [income, setIncome] = useState([])
 
     const addIncomeItem = async (newIncome) => {
-        const collectionRef = collection(db, 'income')
+        const collectionRef = collection(db, "income")
         
         try {
             const docSnap = await addDoc(collectionRef, newIncome)
@@ -29,29 +33,45 @@ export default function FinanceContextProvider(children){
             })
         } catch (error) {
             console.log(error.message)
+            throw error
         }
     }
     const removeIncomeItem = async (incomeId) => {
         const docRef = doc(db, 'income', incomeId)
         try {
             await deleteDoc(docRef)
-
             // Update State
             setIncome((prevState) => {
                 return prevState.filter((i) => i.id !== incomeId)
             })
         } catch (error) {
             console.log(error.message)
+            throw error
         }}
-    }
+    
 
     const values = { income, addIncomeItem, removeIncomeItem }
 
+    useEffect(() => {
+        const getIncomeData = async () => {
+            const collectionRef = collection(db, 'income')
+            const docsSnap = await getDocs(collectionRef)
+
+            const data = docsSnap.docs.map(doc => {
+                return {
+                    id: doc.id,
+                    ...doc.data(),
+                    createdAt: new Date(doc.data().createdAt.toMillis())
+                }
+            })
+
+            setIncome(data)
+        }
+
+        getIncomeData()
+    }, [])
+
     return (
-    <FinanceContext.Provider 
-    value={values}
-    >
-        {children}
-    </FinanceContext.Provider>
+    <financeContext.Provider value={values}>{children}</financeContext.Provider>
     )
 }

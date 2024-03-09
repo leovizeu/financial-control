@@ -1,14 +1,7 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useContext } from 'react'
 import { currencyFormatter } from '@/app/controller/utils'
 import Modal from "@/app/components/Modal"
-
-// Database
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
-import { Doughnut } from "react-chartjs-2"
-
-// Firebase
-import { db } from '@/app/controller/Firebase'
-import { collection, addDoc, getDocs, doc, deleteDoc } from 'firebase/firestore'
+import { financeContext } from "@/app/controller/store/finance-context"
 
 // Icons
 import { FaRegTrashAlt } from 'react-icons/fa'
@@ -17,6 +10,7 @@ function AddIncomeModal ({ show, onClose }) {
 
     const amoutRef = useRef()
     const descriptionRef = useRef()
+    const { income } = useContext(financeContext)
 
     // Handler Function 
     const addIncomeHandler = async (e) => {
@@ -34,24 +28,7 @@ function AddIncomeModal ({ show, onClose }) {
 
     const deleteIncomeEntryHandler = async (incomeId) => {
 
-        useEffect(() => {
-            const getIncomeData = async () => {
-                const collectionRef = collection(db, 'income')
-                const docsSnap = await getDocs(collectionRef)
-    
-                const data = docsSnap.docs.map(doc => {
-                    return {
-                        id: doc.id,
-                        ...doc.data(),
-                        createdAt: new Date(doc.data().createdAt.toMillis())
-                    }
-                })
-    
-                setIncome(data)
-            }
-    
-            getIncomeData()
-        }, [])
+        
     return (
         <Modal show={show} onClose={onClose}>
             <form onSubmit={addIncomeHandler} className='flex flex-col gap-4'>
@@ -104,6 +81,6 @@ function AddIncomeModal ({ show, onClose }) {
             </div>
         </Modal>
     )
-}
+}}
 
 export default AddIncomeModal
