@@ -18,7 +18,8 @@ const MyHeader = () => {
             src='/thispersondoesnotexist.jpeg' 
             alt="profile img" 
             height={40} 
-            width={40} 
+            width={40}
+            priority={false}
             />
           </div>
           {/* Profile name */}

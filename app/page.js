@@ -49,11 +49,12 @@ export default function Home() {
 
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
   
-  {/* Add Income Modal */}
-  <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal} />
-
+  
   return (
     <>
+        {/* Add Income Modal */}
+        <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal} />
+
         {/* Current Balance and Buttons to Add Income/Expenses */}
 
         <main className='container max-w-2xl px-6 mx-auto'>
@@ -62,7 +63,7 @@ export default function Home() {
                   Current Balance
               </small>
               <h2 className='text-blue-500 font-sans font-bold text-4xl py-3'>
-              {currencyFormatter(10000)}
+              {currencyFormatter(0)}
               </h2>
           </section>
 
@@ -76,7 +77,7 @@ export default function Home() {
             <div className='flex justify-around'>
                 <div className='flex-col flex items-center justify-center'>
                     <h1 className='uppercase'>Income</h1>
-                    <p className='text-green-500 font-sans text-xl'>{currencyFormatter(10000)}</p>
+                    <p className='text-green-500 font-sans text-xl'>{currencyFormatter(0)}</p>
                 </div>
                 
             </div>
