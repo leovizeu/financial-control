@@ -48,13 +48,12 @@ const DUMMY_DATA = [
 export default function Home() {
 
   const [showAddIncomeModal, setShowAddIncomeModal] = useState(false);
+  
+  {/* Add Income Modal */}
+  <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal} />
 
   return (
     <>
-        {/* Add Income Modal */}
-
-        <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal} />
-
         {/* Current Balance and Buttons to Add Income/Expenses */}
 
         <main className='container max-w-2xl px-6 mx-auto'>
@@ -68,7 +67,7 @@ export default function Home() {
           </section>
 
         <section className='flex items-center gap-4 py-3'>
-            <button className='btn btn-primary-outline'>+ Expenses</button>
+            <button className='btn btn-primary-outline' onClick={() => {setShowAddIncomeModal (true)}}>+ Expenses</button>
             <button className='btn btn-primary ' onClick={() => {setShowAddIncomeModal (true)}}>+ Income</button>
         </section>
 
@@ -81,7 +80,7 @@ export default function Home() {
                 </div>
                 
             </div>
-            <div className='flex justify-between'>
+            <div className='flex justify-around'>
                 <div className='flex-col flex items-center justify-center'>
                     <h1 className='uppercase'>Expences</h1>
                     <p className='text-red-500 font-sans text-xl'>{currencyFormatter(0)}</p>

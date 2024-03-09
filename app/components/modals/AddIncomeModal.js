@@ -1,14 +1,15 @@
 import { useRef, useEffect, useContext } from 'react'
 import { currencyFormatter } from '@/app/controller/utils'
-import Modal from "@/app/components/Modal"
 import { financeContext } from "@/app/controller/store/finance-context"
 
 // Icons
 import { FaRegTrashAlt } from 'react-icons/fa'
 
+import Modal from "@/app/components/Modal.js"
+
 function AddIncomeModal ({ show, onClose }) {
 
-    const amoutRef = useRef()
+    const amountRef = useRef()
     const descriptionRef = useRef()
     const { income, addIncomeItem, removeIncomeItem } = useContext(financeContext)
 
