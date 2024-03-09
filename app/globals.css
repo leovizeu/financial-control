@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    @apply dark:text-white dark:bg-slate-900 relative
+  body {
+    @apply relative dark:text-white dark:bg-slate-900
   }
 
   button {

@@ -55,40 +55,34 @@ export default function Home() {
 
         <AddIncomeModal show={showAddIncomeModal} onClose={setShowAddIncomeModal} />
 
-        <main className="dark:bg-gray-900 flex justify-center mx-auto">
-          <div className="flex-col z-10 max-w-5xl w-4/12 items-center justify-start font-mono text-sm md:flex">
-            <h1 className="w-full flex justify-center text-xl p-6">
-              Finance Control
-            </h1>
-          </div>
-        </main>
-
         {/* Current Balance and Buttons to Add Income/Expenses */}
-        <section className='container max-w-2xl px-6  mx- auto w-full py-5 uppercase'>
-            <small className='py-3'>
-                Current Balance
-            </small>
-            <h2 className='text-blue-500 font-sans font-bold text-4xl py-3'>
-            {currencyFormatter(10000)}
-            </h2>
-        </section>
+
+        <main className='container max-w-2xl px-6 mx-auto'>
+          <section className='py-5 uppercase'>
+              <small className='py-3'>
+                  Current Balance
+              </small>
+              <h2 className='text-blue-500 font-sans font-bold text-4xl py-3'>
+              {currencyFormatter(10000)}
+              </h2>
+          </section>
 
         <section className='flex items-center gap-4 py-3'>
-            <button className='btn btn-primary ' onClick={() => {setShowAddIncomeModal (true)}}>+ Income</button>
             <button className='btn btn-primary-outline'>+ Expenses</button>
+            <button className='btn btn-primary ' onClick={() => {setShowAddIncomeModal (true)}}>+ Income</button>
         </section>
 
         {/* Show Income/Expenses tab */}
-        <div className='bg-gray-800 grid grid-cols-2 divide-x shadow-md drop-shadow-md rounded w-full py-8'>
+        <div className='bg-gray-800 grid grid-cols-2 divide-x shadow-md drop-shadow-md rounded py-8'>
             <div className='flex justify-around'>
-                <div className='w-full flex-col flex items-center justify-center'>
+                <div className='flex-col flex items-center justify-center'>
                     <h1 className='uppercase'>Income</h1>
                     <p className='text-green-500 font-sans text-xl'>{currencyFormatter(10000)}</p>
                 </div>
                 
             </div>
             <div className='flex justify-between'>
-                <div className='w-full flex-col flex items-center justify-center'>
+                <div className='flex-col flex items-center justify-center'>
                     <h1 className='uppercase'>Expences</h1>
                     <p className='text-red-500 font-sans text-xl'>{currencyFormatter(0)}</p>
                 </div>
@@ -96,7 +90,7 @@ export default function Home() {
         </div>
 
         {/* Finance Data */}
-        <section className='w-full py-6'>
+        <section className='py-6'>
             <h3 className='text-2xl'>My Expenses</h3>
 
             <div className='flex flex-col gap-4 mt-6'>
@@ -112,7 +106,7 @@ export default function Home() {
                 })}
             </div>
         </section>
-        <section className='w-full py-6'>
+        <section className='py-6'>
             <h3 className='text-2xl'>
                 Stats
             </h3>
@@ -130,6 +124,7 @@ export default function Home() {
                 />
             </div>
         </section>
+      </main>
     </>
   );
 }
